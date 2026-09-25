@@ -1,0 +1,249 @@
+{% comment %}
+  Masonry Gallery with CSS-only Image Popup
+  ------------------------------------------
+  Images are pulled from a page metafield: custom.gallery_images
+  (List of files). Set this up once in:
+  Shopify Admin → Settings → Custom data → Pages → Add definition
+    Name: Gallery Images
+    Namespace and key: custom.gallery_images
+    Type: File reference → List of files
+
+  Add this section to any Page template. Merchants manage images
+  from the page's own editor (Custom data area), not the theme
+  customizer — so bulk-adding/reordering is fast.
+{% endcomment %}
+
+{%- assign gallery_images = page.metafields.custom.gallery_images.value -%}
+
+<div
+  class="masonry-section"
+  style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }}; --gap: {{ section.settings.gap }}px;"
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="masonry-section__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  {%- if gallery_images.size > 0 -%}
+    <div class="masonry-grid">
+      {%- for image in gallery_images -%}
+        <div class="masonry-item">
+          <label for="popup-{{ section.id }}-{{ forloop.index }}" class="masonry-item__label">
+            <img
+              src="{{ image | image_url: width: 800 }}"
+              srcset="{{ image | image_url: width: 400 }} 400w, {{ image | image_url: width: 800 }} 800w, {{ image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 749px) 50vw, (max-width: 989px) 33vw, 25vw"
+              loading="lazy"
+              width="{{ image.width }}"
+              height="{{ image.height }}"
+              alt="{{ image.alt | escape }}"
+              class="masonry-item__img"
+            >
+          </label>
+
+          <input type="checkbox" id="popup-{{ section.id }}-{{ forloop.index }}" class="popup-toggle">
+          <div class="popup-overlay">
+            <label
+              for="popup-{{ section.id }}-{{ forloop.index }}"
+              class="popup-overlay__backdrop"
+              aria-label="Close"
+            ></label>
+            <div class="popup-overlay__content">
+              <label for="popup-{{ section.id }}-{{ forloop.index }}" class="popup-overlay__close" aria-label="Close"
+                >&times;</label
+              >
+              <img
+                src="{{ image | image_url: width: 1600 }}"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+                alt="{{ image.alt | escape }}"
+                class="popup-overlay__img"
+              >
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    {%- if request.design_mode -%}
+      <div class="masonry-section__empty">
+        No images found. Add images to this page's <strong>Gallery Images</strong> field under Custom data
+        (Namespace/key: <code>custom.gallery_images</code>).
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .masonry-section {
+    padding: 40px 20px;
+  }
+
+  .masonry-section__heading {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .masonry-section__empty {
+    text-align: center;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    color: #666;
+  }
+
+  .masonry-grid {
+    column-count: var(--columns-mobile, 1);
+    column-gap: var(--gap, 16px);
+  }
+
+  @media (min-width: 750px) {
+    .masonry-grid {
+      column-count: var(--columns-tablet, 2);
+    }
+  }
+
+  @media (min-width: 990px) {
+    .masonry-grid {
+      column-count: var(--columns-desktop, 3);
+    }
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: var(--gap, 16px);
+    position: relative;
+  }
+
+  .masonry-item__label {
+    display: block;
+    cursor: zoom-in;
+  }
+
+  .masonry-item__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    transition: opacity 0.2s ease;
+  }
+
+  .masonry-item__label:hover .masonry-item__img {
+    opacity: 0.92;
+  }
+
+  /* Popup */
+  .popup-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-toggle:checked ~ .popup-overlay {
+    display: flex;
+  }
+
+  .popup-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    cursor: zoom-out;
+  }
+
+  .popup-overlay__content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 1;
+  }
+
+  .popup-overlay__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .popup-overlay__close {
+    position: absolute;
+    top: -36px;
+    right: 0;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  @media (max-width: 749px) {
+    .popup-overlay__close {
+      top: -40px;
+      right: 4px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Masonry Gallery",
+  "tag": "section",
+  "class": "section-masonry-gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Gallery"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns (tablet)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Image gap (px)",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Masonry Gallery"
+    }
+  ]
+}
+{% endschema %}
