@@ -26,6 +26,7 @@
   endif
 -%}
 
+{%- if gallery_images.size > 0 or request.design_mode -%}
 <div
   class="masonry-section"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }}; --gap: {{ section.settings.gap }}px;"
@@ -87,6 +88,7 @@
     {%- endif -%}
   {%- endif -%}
 </div>
+{%- endif -%}
 
 {% stylesheet %}
   .masonry-section {

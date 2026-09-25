@@ -8,8 +8,8 @@
   it's what the metaobject definition uses; keep this in sync if
   that field is ever recreated with the correct spelling).
 
-  There's no separate featured-image field, so the lead image is
-  always the first Gallery image.
+  Lead image comes from the featured_image field; entries saved before
+  that field existed fall back to the first Gallery image.
 
   Used by templates/metaobject/events.json. Pair with the
   Masonry Gallery section (reads metaobject.gallary) further down
@@ -23,7 +23,7 @@
   assign ticket_link = metaobject.ticket_link.value
   assign event_description = metaobject.meta_description.value
   assign event_content = metaobject.content
-  assign event_image = metaobject.gallary.value.first
+  assign event_image = metaobject.featured_image.value | default: metaobject.gallary.value.first
   assign is_upcoming = false
   if metaobject.status.value == 'Upcoming'
     assign is_upcoming = true
