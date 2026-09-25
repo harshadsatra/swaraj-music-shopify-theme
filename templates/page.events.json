@@ -24,11 +24,13 @@
       "type": "events-list",
       "settings": {
         "heading": "Events",
-        "empty_text": "No events to show yet.",
-        "columns_desktop": 3,
+        "columns_desktop": 2,
         "columns_mobile": "1"
       }
     }
   },
-  "order": ["main", "events_list"]
+  "order": [
+    "main",
+    "events_list"
+  ]
 }
