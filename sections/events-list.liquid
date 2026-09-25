@@ -33,11 +33,8 @@
 {%- assign upcoming_keys = upcoming_keys | split: ',' | sort -%}
 {%- assign past_keys = past_keys | split: ',' | sort | reverse -%}
 
-<!-- DEBUG upcoming_keys: {{ upcoming_keys | join: ' ## ' }} -->
-<!-- DEBUG past_keys: {{ past_keys | join: ' ## ' }} -->
-{%- for key in upcoming_keys -%}
-  {%- assign dh = key | split: '|' | last -%}
-  <!-- DEBUG handle={{ dh }} lookup.title={{ shop.metaobjects.events[dh].title.value }} -->
+{%- for event in shop.metaobjects.events.values -%}
+  <!-- DEBUG event.handle={{ event.handle }} event.system.handle={{ event.system.handle }} event.id={{ event.id }} event.system.id={{ event.system.id }} event.url={{ event.url }} event.system.url={{ event.system.url }} -->
 {%- endfor -%}
 
 <div
