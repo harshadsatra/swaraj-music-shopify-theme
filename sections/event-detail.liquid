@@ -30,50 +30,110 @@
   endif
 -%}
 
-<div class="section section--page-width event-detail">
-  <div class="event-detail__media">
-    {%- if event_image != blank -%}
-      {{
-        event_image
-        | image_url: width: 1600
-        | image_tag:
-          widths: '400,600,800,1200,1600',
-          sizes: '(max-width: 749px) 100vw, 50vw',
-          class: 'event-detail__image',
-          alt: event_image.alt | default: event_title
-      }}
-    {%- elsif request.design_mode -%}
-      <div class="event-detail__image-placeholder">Add a Featured image or Gallery image</div>
-    {%- endif -%}
+{%- if is_upcoming -%}
+  <div class="section section--page-width event-detail">
+    <div class="event-detail__media">
+      {%- if event_image != blank -%}
+        {{
+          event_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '400,600,800,1200,1600',
+            sizes: '(max-width: 749px) 100vw, 50vw',
+            class: 'event-detail__image',
+            alt: event_image.alt | default: event_title
+        }}
+      {%- elsif request.design_mode -%}
+        <div class="event-detail__image-placeholder">Add a Featured image or Gallery image</div>
+      {%- endif -%}
+    </div>
+
+    <div class="event-detail__info">
+      {%- if event_title != blank -%}
+        <h2 class="event-detail__title">{{ event_title }}</h2>
+      {%- endif -%}
+      {%- if event_tagline != blank -%}
+        <p class="event-detail__tagline">{{ event_tagline }}</p>
+      {%- endif -%}
+      {%- if event_date != blank -%}
+        <h4 class="event-detail__date">{{ event_date | date: '%B %e, %Y' }}</h4>
+      {%- endif -%}
+      {%- if event_description != blank -%}
+        <div class="rte event-detail__description">{{ event_description }}</div>
+      {%- endif -%}
+      {%- if ticket_link != blank -%}
+        <a href="{{ ticket_link }}" class="button event-detail__cta" target="_blank" rel="noopener noreferrer">
+          Get tickets
+        </a>
+      {%- endif -%}
+    </div>
   </div>
 
-  <div class="event-detail__info">
-    {%- if event_title != blank -%}
-      <h2 class="event-detail__title">{{ event_title }}</h2>
-    {%- endif -%}
-    {%- if event_tagline != blank -%}
-      <p class="event-detail__tagline">{{ event_tagline }}</p>
-    {%- endif -%}
-    {%- if event_date != blank -%}
-      <h4 class="event-detail__date">
-        {{ event_date | date: '%B %e, %Y' }}
-        {%- unless is_upcoming %} · Past event{% endunless -%}
-      </h4>
-    {%- endif -%}
-    {%- if event_description != blank -%}
-      <div class="rte event-detail__description">{{ event_description }}</div>
-    {%- endif -%}
-    {%- if is_upcoming and ticket_link != blank -%}
-      <a href="{{ ticket_link }}" class="button event-detail__cta" target="_blank" rel="noopener noreferrer">
-        Get tickets
-      </a>
-    {%- endif -%}
-  </div>
-</div>
+  {%- if event_content != blank -%}
+    <div class="section section--page-width event-detail__content-section">
+      <div class="rte">{{ event_content | metafield_tag }}</div>
+    </div>
+  {%- endif -%}
+{%- else -%}
+  {%- comment -%}
+    Past events reuse Horizon's own row/column flex engine (the same
+    classes and CSS custom properties `sections/section.liquid` +
+    `blocks/group.liquid` + `blocks/image.liquid` render into: see
+    snippets/section.liquid, snippets/group.liquid, snippets/layout-panel-style.liquid,
+    snippets/size-style.liquid, snippets/spacing-style.liquid, snippets/gap-style.liquid,
+    and the `.layout-panel-flex` / `.group-block` / `.image-block` rules in
+    assets/base.css) with the same settings values as the legacy
+    templates/page.gallery.json "image with text" section, so the past-event
+    page's layout and responsive breakpoints (749/750px) match that page
+    exactly instead of approximating it with bespoke CSS.
+  {%- endcomment -%}
+  <div class="section section--page-width">
+    <div
+      class="spacing-style layout-panel-flex layout-panel-flex--row section-content-wrapper mobile-column"
+      style="
+        --flex-direction: row; --flex-wrap: nowrap; --flex-wrap-mobile: wrap; --gap: 16px;
+        --horizontal-alignment: flex-start; --vertical-alignment: center; --vertical-alignment-mobile: center;
+        --padding-block-start: max(20px, calc(var(--spacing-scale) * 40px)); --padding-block-end: 0px;
+      "
+    >
+      <div
+        class="group-block group-block--width-custom size-style"
+        style="--size-style-width: 100%; --size-style-width-mobile: 100%; --size-style-width-mobile-min: 5rem;"
+      >
+        <div
+          class="group-block-content layout-panel-flex layout-panel-flex--column mobile-column"
+          style="
+            --flex-direction: column; --gap: 12px;
+            --horizontal-alignment: flex-start; --vertical-alignment: center; --vertical-alignment-mobile: center;
+          "
+        >
+          {%- if event_title != blank -%}<h2>{{ event_title }}</h2>{%- endif -%}
+          {%- if event_date != blank -%}<h4>{{ event_date | date: '%B %e, %Y' }}</h4>{%- endif -%}
+          {%- if event_description != blank -%}<div class="rte">{{ event_description }}</div>{%- endif -%}
+        </div>
+      </div>
 
-{%- if event_content != blank -%}
-  <div class="section section--page-width event-detail__content-section">
-    <div class="rte">{{ event_content | metafield_tag }}</div>
+      <div
+        class="image-block size-style"
+        style="
+          --ratio: {{ event_image.aspect_ratio | default: 1 }};
+          --size-style-width: 100%; --size-style-width-mobile: 100%; --size-style-width-mobile-min: 5rem;
+        "
+      >
+        {%- if event_image != blank -%}
+          {{
+            event_image
+            | image_url: width: 1600
+            | image_tag:
+              widths: '400,600,800,1200,1600',
+              class: 'image-block__image border-style',
+              alt: event_image.alt | default: event_title
+          }}
+        {%- elsif request.design_mode -%}
+          <div class="event-detail__image-placeholder">Add a Featured image or Gallery image</div>
+        {%- endif -%}
+      </div>
+    </div>
   </div>
 {%- endif -%}
 

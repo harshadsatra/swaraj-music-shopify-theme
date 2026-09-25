@@ -24,6 +24,11 @@
   else
     assign gallery_images = page.metafields.custom.gallery_images.value
   endif
+
+  assign gallery_heading = section.settings.heading
+  if metaobject.status.value == 'Past'
+    assign gallery_heading = blank
+  endif
 -%}
 
 {%- if gallery_images.size > 0 or request.design_mode -%}
@@ -31,8 +36,8 @@
   class="masonry-section"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }}; --gap: {{ section.settings.gap }}px;"
 >
-  {%- if section.settings.heading != blank -%}
-    <h2 class="masonry-section__heading">{{ section.settings.heading | escape }}</h2>
+  {%- if gallery_heading != blank -%}
+    <h2 class="masonry-section__heading">{{ gallery_heading | escape }}</h2>
   {%- endif -%}
 
   {%- if gallery_images.size > 0 -%}
