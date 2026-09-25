@@ -110,11 +110,14 @@ needed rather than one monolithic file per component.
 
 Events are a metaobject (type handle `events`, defined in the store admin under Settings → Custom data →
 Metaobjects — not in theme code) with fields `status` (choice: `Past`/`Upcoming`, merchant-set — not
-computed from the date), `title`, `tag_line`, `meta_description` (doubles as the page's SEO description),
-`event_date`, `content` (rich text), `gallary` (list of files — **yes, that's a typo in the field key**,
-kept as-is in the Liquid code to match; only rename both together if you ever fix it in admin), and
-`ticket_link`. There's no separate featured-image field — the lead image is always the first `gallary`
-entry. The metaobject has "Web pages" enabled with URL handle `events`, backing a Page (title "Events",
+computed from the date), `title`, `tag_line`, `meta_description`, `event_date`, `content` (rich text),
+`gallary` (list of files — **yes, that's a typo in the field key**, kept as-is in the Liquid code to
+match; only rename both together if you ever fix it in admin), `ticket_link`, `featured_image` (single
+file — the lead image shown in the detail hero and event cards; falls back to the first `gallary` entry
+via `| default:` for entries saved before this field existed), `seo_title`, and `seo_description` (these
+two back the page's `<title>`/meta description via the metaobject's "Publish as web page" mapping — not
+`title`/`meta_description`, which are for on-page display copy). The metaobject has "Web pages" enabled
+with URL handle `events`, backing a Page (title "Events",
 handle `events`, template `page.events`) so entries live at `/pages/events/<handle>`, rendered by
 `templates/metaobject/events.json` → `sections/event-detail.liquid` (+ `sections/masonry-gallery.liquid`
 for the gallery). The listing page (`/pages/events`, `templates/page.events.json`) uses
