@@ -109,7 +109,7 @@
         >
           {%- if event_title != blank -%}<h2>{{ event_title }}</h2>{%- endif -%}
           {%- if event_date != blank -%}<h4>{{ event_date | date: '%B %e, %Y' }}</h4>{%- endif -%}
-          {%- if event_description != blank -%}<div class="rte">{{ event_description }}</div>{%- endif -%}
+          {%- if event_description != blank -%}<div class="rte">{{ event_description | newline_to_br }}</div>{%- endif -%}
         </div>
       </div>
 
