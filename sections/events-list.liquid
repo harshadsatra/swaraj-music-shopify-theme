@@ -1,11 +1,18 @@
 {% comment %}
   Events List
   -----------
-  Lists Event metaobject entries (type handle: events) in two
-  CSS-only tabs: Upcoming (soonest first) and Past (most recent
-  first). Which tab an event lands in is decided by its own
-  `status` field (Past/Upcoming) — set by the merchant on each
-  entry, not computed from event_date.
+  Lists all Event metaobject entries (type handle: events) in one
+  grid — Upcoming (soonest first), then Past (most recent first).
+  Each card carries a status tag since there's no longer a tab to
+  group them visually. Which bucket/tag an event gets is decided by
+  its own `status` field (Past/Upcoming) — set by the merchant on
+  each entry, not computed from event_date.
+
+  ponytail: switched from two tabbed panels to a single combined
+  grid since there are only a couple of events right now; if the
+  list grows large enough that Upcoming/Past filtering becomes
+  useful again, reintroduce tabs (see git history for the old
+  CSS-only tab markup) rather than adding a filter framework.
 
   ponytail: shop.metaobjects.events.values is paginated to 250
   entries here — plenty for a venue's events, but if the list ever
@@ -41,59 +48,22 @@
     <h2 class="events-list__heading">{{ section.settings.heading | escape }}</h2>
   {%- endif -%}
 
-  <div class="events-list__tabs">
-    <input
-      type="radio"
-      name="events-tab-{{ section.id }}"
-      id="events-tab-upcoming-{{ section.id }}"
-      class="events-list__tab-toggle"
-      {% if upcoming_keys.size > 0 or past_keys.size == 0 %}checked{% endif %}
-    >
-    <input
-      type="radio"
-      name="events-tab-{{ section.id }}"
-      id="events-tab-past-{{ section.id }}"
-      class="events-list__tab-toggle"
-      {% if upcoming_keys.size == 0 and past_keys.size > 0 %}checked{% endif %}
-    >
-
-    <div class="events-list__tab-labels" role="tablist">
-      <label for="events-tab-upcoming-{{ section.id }}" class="events-list__tab-label">
-        {{ section.settings.upcoming_label | escape }}
-      </label>
-      <label for="events-tab-past-{{ section.id }}" class="events-list__tab-label">
-        {{ section.settings.past_label | escape }}
-      </label>
+  {%- if upcoming_keys.size > 0 or past_keys.size > 0 -%}
+    <div class="events-list__grid">
+      {%- for key in upcoming_keys -%}
+        {%- assign handle = key | split: '|' | last -%}
+        {%- assign event = shop.metaobjects.events[handle] -%}
+        {%- render 'event-card', event: event, upcoming: true -%}
+      {%- endfor -%}
+      {%- for key in past_keys -%}
+        {%- assign handle = key | split: '|' | last -%}
+        {%- assign event = shop.metaobjects.events[handle] -%}
+        {%- render 'event-card', event: event, upcoming: false -%}
+      {%- endfor -%}
     </div>
-
-    <div class="events-list__panel events-list__panel--upcoming">
-      {%- if upcoming_keys.size > 0 -%}
-        <div class="events-list__grid">
-          {%- for key in upcoming_keys -%}
-            {%- assign handle = key | split: '|' | last -%}
-            {%- assign event = shop.metaobjects.events[handle] -%}
-            {%- render 'event-card', event: event, upcoming: true -%}
-          {%- endfor -%}
-        </div>
-      {%- else -%}
-        <p class="events-list__empty">{{ section.settings.upcoming_empty_text | escape }}</p>
-      {%- endif -%}
-    </div>
-
-    <div class="events-list__panel events-list__panel--past">
-      {%- if past_keys.size > 0 -%}
-        <div class="events-list__grid">
-          {%- for key in past_keys -%}
-            {%- assign handle = key | split: '|' | last -%}
-            {%- assign event = shop.metaobjects.events[handle] -%}
-            {%- render 'event-card', event: event, upcoming: false -%}
-          {%- endfor -%}
-        </div>
-      {%- else -%}
-        <p class="events-list__empty">{{ section.settings.past_empty_text | escape }}</p>
-      {%- endif -%}
-    </div>
-  </div>
+  {%- else -%}
+    <p class="events-list__empty">{{ section.settings.empty_text | escape }}</p>
+  {%- endif -%}
 </div>
 
 {% stylesheet %}
