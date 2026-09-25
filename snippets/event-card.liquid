@@ -1,0 +1,80 @@
+{%- doc -%}
+  Renders one event card for the Events list section.
+
+  @param {object} event - An Event metaobject entry
+  @param {boolean} upcoming - Whether this event is upcoming (shows the ticket button) or past
+
+  @example
+  {% render 'event-card', event: event, upcoming: true %}
+{%- enddoc -%}
+
+{%- liquid
+  assign event_image = event.featured_image.value
+  if event_image == blank
+    assign event_image = event.gallery.value.first
+  endif
+-%}
+
+<a href="{{ event.url }}" class="event-card">
+  <div class="event-card__media">
+    {%- if event_image != blank -%}
+      {{
+        event_image
+        | image_url: width: 800
+        | image_tag:
+          widths: '400,600,800',
+          sizes: '(max-width: 749px) 100vw, 33vw',
+          class: 'event-card__image',
+          alt: event_image.alt | default: event.title.value
+      }}
+    {%- endif -%}
+  </div>
+  <h3 class="event-card__title">{{ event.title.value }}</h3>
+  {%- if event.event_date.value != blank -%}
+    <p class="event-card__date">{{ event.event_date.value | date: '%B %e, %Y' }}</p>
+  {%- endif -%}
+  {%- if event.tagline.value != blank -%}
+    <p class="event-card__tagline">{{ event.tagline.value }}</p>
+  {%- endif -%}
+  {%- if event.description.value != blank -%}
+    <p class="event-card__description">{{ event.description.value | truncate: 140 }}</p>
+  {%- endif -%}
+  {%- if upcoming and event.ticket_link.value != blank -%}
+    <span class="button button-secondary event-card__cta">Get tickets</span>
+  {%- endif -%}
+</a>
+
+{% stylesheet %}
+  .event-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .event-card__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .event-card__title {
+    margin: 0;
+  }
+
+  .event-card__date {
+    margin: 4px 0 0;
+    font-weight: 600;
+  }
+
+  .event-card__tagline,
+  .event-card__description {
+    margin: 4px 0 0;
+  }
+
+  .event-card__cta {
+    margin-top: 12px;
+    display: inline-block;
+  }
+{% endstylesheet %}

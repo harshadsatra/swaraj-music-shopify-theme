@@ -1,0 +1,137 @@
+{% comment %}
+  Event Detail
+  ------------
+  Renders a single Event metaobject entry (type handle: event).
+  Expects fields: title, tagline, event_date, ticket_link,
+  description, content, featured_image, gallery.
+
+  Used by templates/metaobject/event.json. Pair with the
+  Masonry Gallery section (reads metaobject.gallery) further down
+  the same template for the event's photo gallery.
+{% endcomment %}
+
+{%- liquid
+  assign event_title = metaobject.title.value
+  assign event_tagline = metaobject.tagline.value
+  assign event_date = metaobject.event_date.value
+  assign ticket_link = metaobject.ticket_link.value
+  assign event_description = metaobject.description.value
+  assign event_content = metaobject.content.value
+  assign event_image = metaobject.featured_image.value
+  if event_image == blank
+    assign event_image = metaobject.gallery.value.first
+  endif
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign event_day = event_date | date: '%Y-%m-%d'
+  assign is_upcoming = false
+  if event_day >= today
+    assign is_upcoming = true
+  endif
+-%}
+
+<div class="section section--page-width event-detail">
+  <div class="event-detail__media">
+    {%- if event_image != blank -%}
+      {{
+        event_image
+        | image_url: width: 1600
+        | image_tag:
+          widths: '400,600,800,1200,1600',
+          sizes: '(max-width: 749px) 100vw, 50vw',
+          class: 'event-detail__image',
+          alt: event_image.alt | default: event_title
+      }}
+    {%- elsif request.design_mode -%}
+      <div class="event-detail__image-placeholder">Add a Featured image or Gallery image</div>
+    {%- endif -%}
+  </div>
+
+  <div class="event-detail__info">
+    {%- if event_title != blank -%}
+      <h2 class="event-detail__title">{{ event_title }}</h2>
+    {%- endif -%}
+    {%- if event_tagline != blank -%}
+      <p class="event-detail__tagline">{{ event_tagline }}</p>
+    {%- endif -%}
+    {%- if event_date != blank -%}
+      <h4 class="event-detail__date">
+        {{ event_date | date: '%B %e, %Y' }}
+        {%- unless is_upcoming %} · Past event{% endunless -%}
+      </h4>
+    {%- endif -%}
+    {%- if event_description != blank -%}
+      <div class="rte event-detail__description">{{ event_description }}</div>
+    {%- endif -%}
+    {%- if is_upcoming and ticket_link != blank -%}
+      <a href="{{ ticket_link }}" class="button event-detail__cta" target="_blank" rel="noopener noreferrer">
+        Get tickets
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- if event_content != blank -%}
+  <div class="section section--page-width event-detail__content-section">
+    <div class="rte">{{ event_content }}</div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .event-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: center;
+    padding-block: 40px 0;
+  }
+
+  .event-detail__media,
+  .event-detail__info {
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  .event-detail__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+
+  .event-detail__image-placeholder {
+    border: 1px dashed rgb(var(--color-foreground-rgb) / var(--opacity-40));
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .event-detail__tagline {
+    margin-block-start: 8px;
+  }
+
+  .event-detail__date {
+    margin-block-start: 8px;
+  }
+
+  .event-detail__description {
+    margin-block-start: 16px;
+  }
+
+  .event-detail__cta {
+    margin-block-start: 24px;
+    display: inline-block;
+  }
+
+  .event-detail__content-section {
+    padding-block-start: 32px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Event detail",
+  "tag": "section",
+  "class": "section-event-detail",
+  "settings": []
+}
+{% endschema %}

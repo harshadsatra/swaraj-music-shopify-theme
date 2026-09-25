@@ -1,19 +1,28 @@
 {% comment %}
   Masonry Gallery with CSS-only Image Popup
   ------------------------------------------
-  Images are pulled from a page metafield: custom.gallery_images
-  (List of files). Set this up once in:
+  On a metaobject page (e.g. an Event), images come from that
+  metaobject's `gallery` field (List of files).
+
+  On a regular Page, images come from a page metafield:
+  custom.gallery_images (List of files). Set this up once in:
   Shopify Admin → Settings → Custom data → Pages → Add definition
     Name: Gallery Images
     Namespace and key: custom.gallery_images
     Type: File reference → List of files
 
-  Add this section to any Page template. Merchants manage images
-  from the page's own editor (Custom data area), not the theme
-  customizer — so bulk-adding/reordering is fast.
+  Add this section to any Page or Event template. Merchants manage
+  images from that resource's own editor (Custom data / metaobject
+  entry), not the theme customizer — so bulk-adding/reordering is fast.
 {% endcomment %}
 
-{%- assign gallery_images = page.metafields.custom.gallery_images.value -%}
+{%- liquid
+  if metaobject.gallery != blank
+    assign gallery_images = metaobject.gallery.value
+  else
+    assign gallery_images = page.metafields.custom.gallery_images.value
+  endif
+-%}
 
 <div
   class="masonry-section"
@@ -66,8 +75,12 @@
   {%- else -%}
     {%- if request.design_mode -%}
       <div class="masonry-section__empty">
-        No images found. Add images to this page's <strong>Gallery Images</strong> field under Custom data
-        (Namespace/key: <code>custom.gallery_images</code>).
+        {%- if metaobject != blank -%}
+          No images found. Add images to this event's <strong>Gallery</strong> field.
+        {%- else -%}
+          No images found. Add images to this page's <strong>Gallery Images</strong> field under Custom data
+          (Namespace/key: <code>custom.gallery_images</code>).
+        {%- endif -%}
       </div>
     {%- endif -%}
   {%- endif -%}

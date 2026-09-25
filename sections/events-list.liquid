@@ -1,0 +1,224 @@
+{% comment %}
+  Events List
+  -----------
+  Lists Event metaobject entries (type handle: event) in two
+  CSS-only tabs: Upcoming (soonest first) and Past (most recent
+  first). An event is "upcoming" when its event_date is today or
+  later.
+
+  ponytail: shop.metaobjects.event.values is paginated to 250
+  entries here — plenty for a venue's events, but if the list ever
+  grows past that, swap the {% paginate %} block for multi-page
+  fetching (or a "load more" control).
+{% endcomment %}
+
+{%- liquid
+  assign today = 'now' | date: '%Y-%m-%d'
+  assign upcoming_keys = ''
+  assign past_keys = ''
+-%}
+
+{%- paginate shop.metaobjects.event.values by 250 -%}
+  {%- for event in shop.metaobjects.event.values -%}
+    {%- assign event_day = event.event_date.value | date: '%Y-%m-%d' -%}
+    {%- assign sort_key = event_day | append: '|' | append: event.handle -%}
+    {%- if event_day >= today -%}
+      {%- assign upcoming_keys = upcoming_keys | append: sort_key | append: ',' -%}
+    {%- else -%}
+      {%- assign past_keys = past_keys | append: sort_key | append: ',' -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endpaginate -%}
+
+{%- assign upcoming_keys = upcoming_keys | split: ',' | sort -%}
+{%- assign past_keys = past_keys | split: ',' | sort | reverse -%}
+
+<div
+  class="section section--page-width events-list"
+  style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-mobile: {{ section.settings.columns_mobile }};"
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="events-list__heading">{{ section.settings.heading | escape }}</h2>
+  {%- endif -%}
+
+  <div class="events-list__tabs">
+    <input
+      type="radio"
+      name="events-tab-{{ section.id }}"
+      id="events-tab-upcoming-{{ section.id }}"
+      class="events-list__tab-toggle"
+      {% if upcoming_keys.size > 0 or past_keys.size == 0 %}checked{% endif %}
+    >
+    <input
+      type="radio"
+      name="events-tab-{{ section.id }}"
+      id="events-tab-past-{{ section.id }}"
+      class="events-list__tab-toggle"
+      {% if upcoming_keys.size == 0 and past_keys.size > 0 %}checked{% endif %}
+    >
+
+    <div class="events-list__tab-labels" role="tablist">
+      <label for="events-tab-upcoming-{{ section.id }}" class="events-list__tab-label">
+        {{ section.settings.upcoming_label | escape }}
+      </label>
+      <label for="events-tab-past-{{ section.id }}" class="events-list__tab-label">
+        {{ section.settings.past_label | escape }}
+      </label>
+    </div>
+
+    <div class="events-list__panel events-list__panel--upcoming">
+      {%- if upcoming_keys.size > 0 -%}
+        <div class="events-list__grid">
+          {%- for key in upcoming_keys -%}
+            {%- assign handle = key | split: '|' | last -%}
+            {%- assign event = shop.metaobjects.event[handle] -%}
+            {%- render 'event-card', event: event, upcoming: true -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="events-list__empty">{{ section.settings.upcoming_empty_text | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="events-list__panel events-list__panel--past">
+      {%- if past_keys.size > 0 -%}
+        <div class="events-list__grid">
+          {%- for key in past_keys -%}
+            {%- assign handle = key | split: '|' | last -%}
+            {%- assign event = shop.metaobjects.event[handle] -%}
+            {%- render 'event-card', event: event, upcoming: false -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <p class="events-list__empty">{{ section.settings.past_empty_text | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .events-list {
+    padding-block: 40px 80px;
+  }
+
+  .events-list__heading {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .events-list__tab-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .events-list__tab-labels {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .events-list__tab-label {
+    cursor: pointer;
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
+  }
+
+  .events-list__panel {
+    display: none;
+  }
+
+  .events-list__tab-toggle:first-of-type:checked ~ .events-list__tab-labels .events-list__tab-label:first-of-type,
+  .events-list__tab-toggle:last-of-type:checked ~ .events-list__tab-labels .events-list__tab-label:last-of-type {
+    background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+    font-weight: 600;
+  }
+
+  .events-list__tab-toggle:first-of-type:checked ~ .events-list__panel--upcoming,
+  .events-list__tab-toggle:last-of-type:checked ~ .events-list__panel--past {
+    display: block;
+  }
+
+  .events-list__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
+    gap: 32px;
+  }
+
+  @media (min-width: 750px) {
+    .events-list__grid {
+      grid-template-columns: repeat(var(--columns-desktop, 3), 1fr);
+    }
+  }
+
+  .events-list__empty {
+    text-align: center;
+    padding: 40px;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Events list",
+  "tag": "section",
+  "class": "section-events-list",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Events"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_label",
+      "label": "Upcoming tab label",
+      "default": "Upcoming"
+    },
+    {
+      "type": "text",
+      "id": "past_label",
+      "label": "Past tab label",
+      "default": "Past"
+    },
+    {
+      "type": "text",
+      "id": "upcoming_empty_text",
+      "label": "Upcoming empty state text",
+      "default": "No upcoming events right now — check back soon."
+    },
+    {
+      "type": "text",
+      "id": "past_empty_text",
+      "label": "Past empty state text",
+      "default": "No past events to show yet."
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Events list"
+    }
+  ]
+}
+{% endschema %}
