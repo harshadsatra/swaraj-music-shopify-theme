@@ -9,13 +9,10 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign event_image = event.featured_image.value
-  if event_image == blank
-    assign event_image = event.gallery.value.first
-  endif
+  assign event_image = event.gallary.value.first
 -%}
 
-<a href="{{ event.url }}" class="event-card">
+<a href="{{ event.system.url }}" class="event-card">
   <div class="event-card__media">
     {%- if event_image != blank -%}
       {{
@@ -33,11 +30,11 @@
   {%- if event.event_date.value != blank -%}
     <p class="event-card__date">{{ event.event_date.value | date: '%B %e, %Y' }}</p>
   {%- endif -%}
-  {%- if event.tagline.value != blank -%}
-    <p class="event-card__tagline">{{ event.tagline.value }}</p>
+  {%- if event.tag_line.value != blank -%}
+    <p class="event-card__tagline">{{ event.tag_line.value }}</p>
   {%- endif -%}
-  {%- if event.description.value != blank -%}
-    <p class="event-card__description">{{ event.description.value | truncate: 140 }}</p>
+  {%- if event.meta_description.value != blank -%}
+    <p class="event-card__description">{{ event.meta_description.value | truncate: 140 }}</p>
   {%- endif -%}
   {%- if upcoming and event.ticket_link.value != blank -%}
     <span class="button button-secondary event-card__cta">Get tickets</span>

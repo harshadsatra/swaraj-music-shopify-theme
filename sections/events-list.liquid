@@ -21,7 +21,7 @@
 {%- paginate shop.metaobjects.events.values by 250 -%}
   {%- for event in shop.metaobjects.events.values -%}
     {%- assign event_day = event.event_date.value | date: '%Y-%m-%d' -%}
-    {%- assign sort_key = event_day | append: '|' | append: event.handle -%}
+    {%- assign sort_key = event_day | append: '|' | append: event.system.handle -%}
     {%- if event.status.value == 'Upcoming' -%}
       {%- assign upcoming_keys = upcoming_keys | append: sort_key | append: ',' -%}
     {%- else -%}
@@ -32,10 +32,6 @@
 
 {%- assign upcoming_keys = upcoming_keys | split: ',' | sort -%}
 {%- assign past_keys = past_keys | split: ',' | sort | reverse -%}
-
-{%- for event in shop.metaobjects.events.values -%}
-  <!-- DEBUG event.handle={{ event.handle }} event.system.handle={{ event.system.handle }} event.id={{ event.id }} event.system.id={{ event.system.id }} event.url={{ event.url }} event.system.url={{ event.system.url }} -->
-{%- endfor -%}
 
 <div
   class="section section--page-width events-list"
