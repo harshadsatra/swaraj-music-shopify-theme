@@ -24,10 +24,7 @@
       "type": "events-list",
       "settings": {
         "heading": "Events",
-        "upcoming_label": "Upcoming",
-        "past_label": "Past",
-        "upcoming_empty_text": "No upcoming events right now — check back soon.",
-        "past_empty_text": "No past events to show yet.",
+        "empty_text": "No events to show yet.",
         "columns_desktop": 3,
         "columns_mobile": "1"
       }
