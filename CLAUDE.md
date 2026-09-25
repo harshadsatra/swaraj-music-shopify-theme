@@ -108,14 +108,26 @@ needed rather than one monolithic file per component.
 
 ### Events
 
-Events are a metaobject (type handle `event`, defined in the store admin under Settings → Custom data →
-Metaobjects — not in theme code) with fields `title`, `tagline`, `event_date`, `ticket_link`,
-`description`, `content`, `featured_image`, and `gallery` (list of files). The metaobject definition has
-"Web pages" enabled with URL handle `events`, so each entry gets its own storefront page at
-`/pages/events/<handle>`, rendered by `templates/metaobject/event.json` → `sections/event-detail.liquid`
-(+ `sections/masonry-gallery.liquid` for the `gallery` field). The listing page (`/pages/events`,
-`templates/page.events.json`) uses `sections/events-list.liquid` + `snippets/event-card.liquid`, which
-split entries into Upcoming/Past tabs by comparing `event_date` to today (both use the
-"date|handle" sort-key + `shop.metaobjects.event[handle]` lookup trick since Liquid's `sort` filter can't
-sort by a nested `field.value`). `sections/masonry-gallery.liquid` reads `metaobject.gallery` first,
-falling back to the page metafield `custom.gallery_images` so the older gallery page keeps working.
+Events are a metaobject (type handle `events`, defined in the store admin under Settings → Custom data →
+Metaobjects — not in theme code) with fields `status` (choice: `Past`/`Upcoming`, merchant-set — not
+computed from the date), `title`, `tag_line`, `meta_description` (doubles as the page's SEO description),
+`event_date`, `content` (rich text), `gallary` (list of files — **yes, that's a typo in the field key**,
+kept as-is in the Liquid code to match; only rename both together if you ever fix it in admin), and
+`ticket_link`. There's no separate featured-image field — the lead image is always the first `gallary`
+entry. The metaobject has "Web pages" enabled with URL handle `events`, backing a Page (title "Events",
+handle `events`, template `page.events`) so entries live at `/pages/events/<handle>`, rendered by
+`templates/metaobject/events.json` → `sections/event-detail.liquid` (+ `sections/masonry-gallery.liquid`
+for the gallery). The listing page (`/pages/events`, `templates/page.events.json`) uses
+`sections/events-list.liquid` + `snippets/event-card.liquid`, which bucket entries into Upcoming/Past tabs
+by the `status` field, sorting within each via a "date|handle" sort-key trick (Liquid's `sort` filter can't
+sort by a nested `field.value`) resolved back to the full object with `shop.metaobjects.events[handle]`.
+`sections/masonry-gallery.liquid` reads `metaobject.gallary` first, falling back to the page metafield
+`custom.gallery_images` so the older gallery page keeps working.
+
+Two non-obvious Liquid quirks discovered building this (verified against this theme's actual metaobject
+rendering, not just docs — re-check if Shopify changes this):
+- A metaobject drop's own handle/id/url live under `.system` (`event.system.handle`, `event.system.url`),
+  not directly on the object — presumably so a custom field can be named `handle` without colliding.
+- A rich text metaobject field (`content`) does **not** auto-render as HTML like a rich-text *metafield*
+  does. Printing it directly (with or without `.value`) dumps its raw JSON structure — pipe it through
+  `| metafield_tag` to get HTML (see `sections/event-detail.liquid`).
