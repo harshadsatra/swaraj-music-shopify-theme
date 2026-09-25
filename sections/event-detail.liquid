@@ -22,7 +22,7 @@
   assign event_date = metaobject.event_date.value
   assign ticket_link = metaobject.ticket_link.value
   assign event_description = metaobject.meta_description.value
-  assign event_content = metaobject.content.value
+  assign event_content = metaobject.content
   assign event_image = metaobject.gallary.value.first
   assign is_upcoming = false
   if metaobject.status.value == 'Upcoming'
