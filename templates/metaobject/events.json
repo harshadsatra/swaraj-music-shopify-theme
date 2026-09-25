@@ -24,8 +24,5 @@
       }
     }
   },
-  "order": [
-    "event_detail",
-    "event_gallery"
-  ]
+  "order": ["event_detail", "event_gallery"]
 }
