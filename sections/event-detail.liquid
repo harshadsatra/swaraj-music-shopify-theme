@@ -1,30 +1,31 @@
 {% comment %}
   Event Detail
   ------------
-  Renders a single Event metaobject entry (type handle: event).
-  Expects fields: title, tagline, event_date, ticket_link,
-  description, content, featured_image, gallery.
+  Renders a single Event metaobject entry (type handle: events).
+  Expects fields: status (Past/Upcoming choice), title, tag_line,
+  event_date, ticket_link, meta_description, content, gallary
+  (List of files — yes, "gallary" is a typo in the field key, but
+  it's what the metaobject definition uses; keep this in sync if
+  that field is ever recreated with the correct spelling).
 
-  Used by templates/metaobject/event.json. Pair with the
-  Masonry Gallery section (reads metaobject.gallery) further down
+  There's no separate featured-image field, so the lead image is
+  always the first Gallery image.
+
+  Used by templates/metaobject/events.json. Pair with the
+  Masonry Gallery section (reads metaobject.gallary) further down
   the same template for the event's photo gallery.
 {% endcomment %}
 
 {%- liquid
   assign event_title = metaobject.title.value
-  assign event_tagline = metaobject.tagline.value
+  assign event_tagline = metaobject.tag_line.value
   assign event_date = metaobject.event_date.value
   assign ticket_link = metaobject.ticket_link.value
-  assign event_description = metaobject.description.value
+  assign event_description = metaobject.meta_description.value
   assign event_content = metaobject.content.value
-  assign event_image = metaobject.featured_image.value
-  if event_image == blank
-    assign event_image = metaobject.gallery.value.first
-  endif
-  assign today = 'now' | date: '%Y-%m-%d'
-  assign event_day = event_date | date: '%Y-%m-%d'
+  assign event_image = metaobject.gallary.value.first
   assign is_upcoming = false
-  if event_day >= today
+  if metaobject.status.value == 'Upcoming'
     assign is_upcoming = true
   endif
 -%}

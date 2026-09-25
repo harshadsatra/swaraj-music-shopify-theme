@@ -1,28 +1,28 @@
 {% comment %}
   Events List
   -----------
-  Lists Event metaobject entries (type handle: event) in two
+  Lists Event metaobject entries (type handle: events) in two
   CSS-only tabs: Upcoming (soonest first) and Past (most recent
-  first). An event is "upcoming" when its event_date is today or
-  later.
+  first). Which tab an event lands in is decided by its own
+  `status` field (Past/Upcoming) — set by the merchant on each
+  entry, not computed from event_date.
 
-  ponytail: shop.metaobjects.event.values is paginated to 250
+  ponytail: shop.metaobjects.events.values is paginated to 250
   entries here — plenty for a venue's events, but if the list ever
   grows past that, swap the {% paginate %} block for multi-page
   fetching (or a "load more" control).
 {% endcomment %}
 
 {%- liquid
-  assign today = 'now' | date: '%Y-%m-%d'
   assign upcoming_keys = ''
   assign past_keys = ''
 -%}
 
-{%- paginate shop.metaobjects.event.values by 250 -%}
-  {%- for event in shop.metaobjects.event.values -%}
+{%- paginate shop.metaobjects.events.values by 250 -%}
+  {%- for event in shop.metaobjects.events.values -%}
     {%- assign event_day = event.event_date.value | date: '%Y-%m-%d' -%}
     {%- assign sort_key = event_day | append: '|' | append: event.handle -%}
-    {%- if event_day >= today -%}
+    {%- if event.status.value == 'Upcoming' -%}
       {%- assign upcoming_keys = upcoming_keys | append: sort_key | append: ',' -%}
     {%- else -%}
       {%- assign past_keys = past_keys | append: sort_key | append: ',' -%}
@@ -71,7 +71,7 @@
         <div class="events-list__grid">
           {%- for key in upcoming_keys -%}
             {%- assign handle = key | split: '|' | last -%}
-            {%- assign event = shop.metaobjects.event[handle] -%}
+            {%- assign event = shop.metaobjects.events[handle] -%}
             {%- render 'event-card', event: event, upcoming: true -%}
           {%- endfor -%}
         </div>
@@ -85,7 +85,7 @@
         <div class="events-list__grid">
           {%- for key in past_keys -%}
             {%- assign handle = key | split: '|' | last -%}
-            {%- assign event = shop.metaobjects.event[handle] -%}
+            {%- assign event = shop.metaobjects.events[handle] -%}
             {%- render 'event-card', event: event, upcoming: false -%}
           {%- endfor -%}
         </div>
