@@ -33,6 +33,13 @@
 {%- assign upcoming_keys = upcoming_keys | split: ',' | sort -%}
 {%- assign past_keys = past_keys | split: ',' | sort | reverse -%}
 
+<!-- DEBUG upcoming_keys: {{ upcoming_keys | join: ' ## ' }} -->
+<!-- DEBUG past_keys: {{ past_keys | join: ' ## ' }} -->
+{%- for key in upcoming_keys -%}
+  {%- assign dh = key | split: '|' | last -%}
+  <!-- DEBUG handle={{ dh }} lookup.title={{ shop.metaobjects.events[dh].title.value }} -->
+{%- endfor -%}
+
 <div
   class="section section--page-width events-list"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-mobile: {{ section.settings.columns_mobile }};"
