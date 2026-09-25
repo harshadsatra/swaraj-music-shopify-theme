@@ -1,0 +1,10 @@
+{
+  "name": "swaraj-music-shopify-theme",
+  "private": true,
+  "scripts": {
+    "dev": "shopify theme dev --store=swaraj-music.myshopify.com --theme=201404744007",
+    "push": "shopify theme push --store=swaraj-music.myshopify.com --theme=201404744007",
+    "pull": "shopify theme pull --store=swaraj-music.myshopify.com --theme=201404744007",
+    "check": "shopify theme check"
+  }
+}
