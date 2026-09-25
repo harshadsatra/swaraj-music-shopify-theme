@@ -1082,7 +1082,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>NEXT EVENT </p><p>COMING SOON</p>",
+                "text": "<p>Event</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1106,9 +1106,8 @@
             },
             "text_gcf3jW": {
               "type": "text",
-              "disabled": true,
               "settings": {
-                "text": "<p>24.07.26<br/>London <br/> Resident Advisor</p>",
+                "text": "<p>FRIDAY 11TH DECEMBER<br/>202693 FEET EAST, LONDON</p>",
                 "width": "fit-content",
                 "max_width": "narrow",
                 "alignment": "left",
@@ -1132,9 +1131,8 @@
             },
             "button_88zUyN": {
               "type": "button",
-              "disabled": true,
               "settings": {
-                "label": "Buy",
+                "label": "Buy Tickets",
                 "link": "https://ra.co/events/2366213",
                 "open_in_new_tab": true,
                 "style_class": "button-custom",
