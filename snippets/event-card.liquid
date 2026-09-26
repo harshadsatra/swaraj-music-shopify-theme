@@ -25,9 +25,7 @@
           alt: event_image.alt | default: event.title.value
       }}
     {%- endif -%}
-    <span class="event-card__tag{% unless upcoming %} event-card__tag--past{% endunless %}">
-      {{- event.status.value -}}
-    </span>
+    <span class="event-card__tag">{{- event.status.value -}}</span>
   </div>
   <h3 class="event-card__title">{{ event.title.value }}</h3>
   {%- if event.event_date.value != blank -%}
@@ -71,11 +69,6 @@
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
-    background: var(--color-foreground);
-    color: var(--color-background);
-  }
-
-  .event-card__tag--past {
     background: var(--color-background);
     color: var(--color-foreground);
     border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
