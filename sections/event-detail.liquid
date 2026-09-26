@@ -35,7 +35,6 @@
   assign event_tagline = metaobject.tag_line.value
   assign event_date = metaobject.event_date.value
   assign ticket_link = metaobject.ticket_link.value
-  assign event_description = metaobject.meta_description.value
   assign event_content = metaobject.content
   assign event_image = metaobject.featured_image.value | default: metaobject.gallary.value.first
   assign is_upcoming = false
@@ -67,7 +66,6 @@
         {%- if event_title != blank -%}<h2>{{ event_title }}</h2>{%- endif -%}
         {%- if event_tagline != blank -%}<p>{{ event_tagline }}</p>{%- endif -%}
         {%- if event_date != blank -%}<h4>{{ event_date | date: '%B %e, %Y' }}</h4>{%- endif -%}
-        {%- if event_description != blank -%}<div class="rte">{{ event_description | newline_to_br }}</div>{%- endif -%}
         {%- if is_upcoming and ticket_link != blank -%}
           <a href="{{ ticket_link }}" class="button" target="_blank" rel="noopener noreferrer">Get tickets</a>
         {%- endif -%}
