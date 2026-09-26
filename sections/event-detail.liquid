@@ -64,7 +64,7 @@
       >
         {%- if event_title != blank -%}<h2 class="event-detail__heading">{{ event_title }}</h2>{%- endif -%}
         {%- if event_date != blank -%}
-          <h4 class="event-detail__heading">{{ event_date | date: '%B %e, %Y' }}</h4>
+          <h4 class="event-detail__heading">{% render 'ordinal-date', date: event_date %}</h4>
         {%- endif -%}
         {%- if event_content != blank -%}<div class="rte">{{ event_content | metafield_tag }}</div>{%- endif -%}
         {%- if is_upcoming and ticket_link != blank -%}

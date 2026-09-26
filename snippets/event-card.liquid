@@ -29,7 +29,7 @@
   </div>
   <h3 class="event-card__title">{{ event.title.value }}</h3>
   {%- if event.event_date.value != blank -%}
-    <p class="event-card__date">{{ event.event_date.value | date: '%B %e, %Y' }}</p>
+    <p class="event-card__date">{% render 'ordinal-date', date: event.event_date.value %}</p>
   {%- endif -%}
   {%- if event.tag_line.value != blank -%}
     <p class="event-card__tagline">{{ event.tag_line.value }}</p>
