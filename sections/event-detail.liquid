@@ -32,7 +32,6 @@
 
 {%- liquid
   assign event_title = metaobject.title.value
-  assign event_tagline = metaobject.tag_line.value
   assign event_date = metaobject.event_date.value
   assign ticket_link = metaobject.ticket_link.value
   assign event_content = metaobject.content
@@ -63,9 +62,10 @@
           --horizontal-alignment: flex-start; --vertical-alignment: center; --vertical-alignment-mobile: center;
         "
       >
-        {%- if event_title != blank -%}<h2>{{ event_title }}</h2>{%- endif -%}
-        {%- if event_tagline != blank -%}<p>{{ event_tagline }}</p>{%- endif -%}
-        {%- if event_date != blank -%}<h4>{{ event_date | date: '%B %e, %Y' }}</h4>{%- endif -%}
+        {%- if event_title != blank -%}<h2 class="event-detail__heading">{{ event_title }}</h2>{%- endif -%}
+        {%- if event_date != blank -%}
+          <h4 class="event-detail__heading">{{ event_date | date: '%B %e, %Y' }}</h4>
+        {%- endif -%}
         {%- if is_upcoming and ticket_link != blank -%}
           <a href="{{ ticket_link }}" class="button" target="_blank" rel="noopener noreferrer">Get tickets</a>
         {%- endif -%}
@@ -102,6 +102,10 @@
 {%- endif -%}
 
 {% stylesheet %}
+  .event-detail__heading {
+    margin: 0;
+  }
+
   .event-detail__image-placeholder {
     border: 1px dashed rgb(var(--color-foreground-rgb) / var(--opacity-40));
     border-radius: 4px;
