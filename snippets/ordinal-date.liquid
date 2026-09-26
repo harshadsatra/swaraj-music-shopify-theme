@@ -1,0 +1,26 @@
+{%- doc -%}
+  Renders a date as "24th July 2026" (day with ordinal suffix, full month, year).
+
+  @param {string} date - Any value the `date` filter accepts (e.g. a metafield's .value)
+
+  @example
+  {% render 'ordinal-date', date: metaobject.event_date.value %}
+{%- enddoc -%}
+
+{%- liquid
+  assign day = date | date: '%-d' | plus: 0
+  assign day_mod_100 = day | modulo: 100
+  assign day_mod_10 = day | modulo: 10
+  assign suffix = 'th'
+  unless day_mod_100 >= 11 and day_mod_100 <= 13
+    case day_mod_10
+      when 1
+        assign suffix = 'st'
+      when 2
+        assign suffix = 'nd'
+      when 3
+        assign suffix = 'rd'
+    endcase
+  endunless
+-%}
+{{- day }}{{ suffix }}{{ date | date: ' %B %Y' -}}
