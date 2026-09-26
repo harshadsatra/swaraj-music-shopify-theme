@@ -66,6 +66,7 @@
         {%- if event_date != blank -%}
           <h4 class="event-detail__heading">{{ event_date | date: '%B %e, %Y' }}</h4>
         {%- endif -%}
+        {%- if event_content != blank -%}<div class="rte">{{ event_content | metafield_tag }}</div>{%- endif -%}
         {%- if is_upcoming and ticket_link != blank -%}
           <a href="{{ ticket_link }}" class="button" target="_blank" rel="noopener noreferrer">Get tickets</a>
         {%- endif -%}
@@ -95,12 +96,6 @@
   </div>
 </div>
 
-{%- if event_content != blank -%}
-  <div class="section section--page-width event-detail__content-section">
-    <div class="rte">{{ event_content | metafield_tag }}</div>
-  </div>
-{%- endif -%}
-
 {% stylesheet %}
   .event-detail__heading {
     margin: 0;
@@ -111,10 +106,6 @@
     border-radius: 4px;
     padding: 40px;
     text-align: center;
-  }
-
-  .event-detail__content-section {
-    padding-block-start: 32px;
   }
 {% endstylesheet %}
 
