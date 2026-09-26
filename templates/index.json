@@ -40,7 +40,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>FRIDAY 11TH DECEMBER</h2><h4>202693 FEET EAST, LONDON</h4>",
+            "text": "<h2>FRIDAY 11TH DECEMBER 2026</h2><h4>93 FEET EAST, LONDON</h4>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -51,7 +51,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
-            "text_color": "#FFFFFF",
+            "text_color": "#ffffff",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
