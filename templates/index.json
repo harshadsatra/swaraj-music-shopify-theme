@@ -1082,11 +1082,11 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>NEXT EVENT </p><p>COMING SOON</p>",
+                "text": "<h3>FRIDAY 11TH DECEMBER 2026</h3><h4>93 FEET EAST, LONDON</h4>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "h3",
+                "type_preset": "rte",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -1132,10 +1132,9 @@
             },
             "button_88zUyN": {
               "type": "button",
-              "disabled": true,
               "settings": {
-                "label": "Buy",
-                "link": "https://ra.co/events/2366213",
+                "label": "Buy Tickets",
+                "link": "https://ra.co/events/2541859",
                 "open_in_new_tab": true,
                 "style_class": "button-custom",
                 "custom_button_background": "rgba(0,0,0,0)",
