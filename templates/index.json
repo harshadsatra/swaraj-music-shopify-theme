@@ -12,7 +12,7 @@
     "hero_p9CmMG": {
       "type": "hero",
       "blocks": {
-        "image_z7fmxT": {
+        "image_tTxyFD": {
           "type": "image",
           "name": "t:names.image",
           "settings": {
@@ -40,7 +40,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h3>FRIDAY 11TH DECEMBER 2026</h3><h4>93 FEET EAST, LONDON</h4>",
+            "text": "<h2>SWARAJ MUSIC</h2><h4>BACK IN 2027</h4>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -65,6 +65,7 @@
         "button_zwMEk4": {
           "type": "button",
           "name": "t:names.button",
+          "disabled": true,
           "settings": {
             "label": "Buy Tickets",
             "link": "https://ra.co/events/2541859",
@@ -83,7 +84,7 @@
         }
       },
       "block_order": [
-        "image_z7fmxT",
+        "image_tTxyFD",
         "text_imxMyC",
         "button_zwMEk4"
       ],
@@ -1082,7 +1083,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<h3>FRIDAY 11TH DECEMBER 2026</h3><h4>93 FEET EAST, LONDON</h4>",
+                "text": "<h2>SWARAJ MUSIC</h2><h4>BACK IN 2027</h4>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -1132,6 +1133,7 @@
             },
             "button_88zUyN": {
               "type": "button",
+              "disabled": true,
               "settings": {
                 "label": "Buy Tickets",
                 "link": "https://ra.co/events/2541859",
