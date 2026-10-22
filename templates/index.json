@@ -40,11 +40,11 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<h2>SWARAJ MUSIC</h2>",
+            "text": "<p>SWARAJ WILL BE BACK IN 2027</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
-            "type_preset": "rte",
+            "type_preset": "h2",
             "font": "var(--font-body--family)",
             "font_size": "1rem",
             "line_height": "normal",
