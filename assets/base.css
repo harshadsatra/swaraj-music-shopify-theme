@@ -1356,6 +1356,7 @@ summary:hover {
 
   h1 {
     margin: 0;
+    font-size: clamp(2rem, 7vw, 50px);
   }
 }
 
