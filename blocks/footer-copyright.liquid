@@ -12,20 +12,26 @@
   "
   {{ block.shopify_attributes }}
 >
+  {%- liquid
+    assign legal_line = ''
+    if block_settings.show_legal_info
+      capture legal_line
+        render 'business-legal-line', include_office: block_settings.show_registered_office
+      endcapture
+      assign legal_line = legal_line | strip
+    endif
+  -%}
   <span class="footer-utilities__text">
     &copy; {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url -}}
+    {% if legal_line != blank -%}
+      {{- legal_line -}}
+    {%- else -%}
+      {{- shop.name | link_to: routes.root_url -}}
+    {%- endif -%}
     {%- if block_settings.show_powered_by -%}
       , {{ powered_by_link }}
     {%- endif -%}
   </span>
-  {%- if block_settings.show_legal_info -%}
-    {%- capture legal_line -%}{%- render 'business-legal-line' -%}{%- endcapture -%}
-    {%- assign legal_line = legal_line | strip -%}
-    {%- if legal_line != blank -%}
-      <span class="footer-utilities__text footer-utilities__legal">{{ legal_line }}</span>
-    {%- endif -%}
-  {%- endif -%}
 </div>
 
 {% stylesheet %}
@@ -33,9 +39,7 @@
     color: var(--color-utilities, var(--color-foreground-muted));
   }
 
-  .footer-utilities__legal {
-    display: block;
-    margin-top: 0.25em;
+  .footer-utilities__group-copyright .footer-utilities__text {
     white-space: normal;
     text-wrap: pretty;
   }
@@ -60,8 +64,15 @@
       "type": "checkbox",
       "id": "show_legal_info",
       "label": "Show company details",
-      "info": "Legal name, company number and registered office. Edit them in Theme settings → Business information.",
+      "info": "Shows the legal name, where the company is registered and the company number. Edit them in Theme settings → Business information.",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_registered_office",
+      "label": "Include registered office address",
+      "default": false,
+      "visible_if": "{{ block.settings.show_legal_info }}"
     },
     {
       "type": "header",
