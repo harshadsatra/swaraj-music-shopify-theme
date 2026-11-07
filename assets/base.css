@@ -1337,8 +1337,65 @@ summary:hover {
   }
 }
 
-.shopify-policy__container {
-  padding-block: var(--padding-xl);
+/* Policy pages (refund, privacy, terms, shipping, contact information, legal notice) */
+.shopify-policy__container.shopify-policy__container {
+  --policy-max-width: 800px;
+
+  box-sizing: content-box;
+  max-width: var(--policy-max-width);
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+
+.shopify-policy__title {
+  margin-block-end: clamp(1.75rem, 4vw, 2.75rem);
+  padding-block-end: clamp(1.25rem, 3vw, 1.75rem);
+  border-block-end: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  text-align: center;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.shopify-policy__body {
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+
+  p,
+  ul,
+  ol {
+    margin-block: 0 1.1em;
+  }
+
+  li + li {
+    margin-block-start: 0.4em;
+  }
+
+  /* Paragraphs that are only a bold line act as section headings in Shopify's policy editor */
+  p:has(> strong:only-child),
+  :is(h2, h3, h4) {
+    margin-block: 2.25em 0.75em;
+    font-size: 1.05em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+
+  :first-child:is(p, h2, h3, h4) {
+    margin-block-start: 0;
+  }
+
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
 }
 
 /* Radio buttons and checkboxes - shared base styles */
