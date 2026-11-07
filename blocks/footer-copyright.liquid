@@ -21,7 +21,7 @@
       assign legal_line = legal_line | strip
     endif
   -%}
-  <span class="footer-utilities__text">
+  <span class="footer-utilities__text footer-copyright__text">
     &copy; {{ 'now' | date: '%Y' }}
     {% if legal_line != blank -%}
       {{- legal_line -}}
@@ -39,7 +39,7 @@
     color: var(--color-utilities, var(--color-foreground-muted));
   }
 
-  .footer-utilities__group-copyright .footer-utilities__text {
+  .footer-copyright__text {
     white-space: normal;
     text-wrap: pretty;
   }
