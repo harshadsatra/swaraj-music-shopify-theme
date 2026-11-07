@@ -19,6 +19,16 @@
   style="{% render 'size-style', settings: block.settings %}"
   {{ block.shopify_attributes }}
 >
+  {%- if block.settings.heading != blank or block.settings.subheading != blank -%}
+    <div class="contact-details__intro">
+      {%- if block.settings.heading != blank -%}
+        <h2 class="contact-details__heading {{ block.settings.heading_size }}">{{ block.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if block.settings.subheading != blank -%}
+        <div class="contact-details__subheading rte">{{ block.settings.subheading }}</div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
   <dl class="contact-details__list">
     {%- if block.settings.show_email and shop.email != blank -%}
       <div class="contact-details__item">
@@ -68,6 +78,26 @@
     text-align: center;
   }
 
+  .contact-details__intro {
+    margin-bottom: 2rem;
+  }
+
+  .contact-details__heading {
+    margin: 0 0 0.75rem;
+  }
+
+  .contact-details__subheading {
+    color: var(--color-foreground-muted, inherit);
+  }
+
+  .contact-details__subheading > :first-child {
+    margin-top: 0;
+  }
+
+  .contact-details__subheading > :last-child {
+    margin-bottom: 0;
+  }
+
   .contact-details__list {
     display: grid;
     gap: 1rem;
@@ -102,6 +132,33 @@
     {
       "type": "paragraph",
       "content": "Email, phone and address come from Settings → General → Store details in the Shopify admin. The company line comes from Theme settings → Business information."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get in touch"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h2", "label": "Large" },
+        { "value": "h3", "label": "Medium" },
+        { "value": "h4", "label": "Small" }
+      ],
+      "default": "h3"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Questions about an order, sizing or returns? Send us a message using the form, or reach us directly below. We'll get back to you as soon as we can.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Contact information"
     },
     {
       "type": "checkbox",
