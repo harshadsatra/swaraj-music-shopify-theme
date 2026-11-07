@@ -117,6 +117,9 @@
         "contact_details": {
           "type": "contact-details",
           "settings": {
+            "heading": "Get in touch",
+            "heading_size": "h3",
+            "subheading": "<p>Questions about an order, sizing or returns? Send us a message using the form, or reach us directly below. We'll get back to you as soon as we can.</p>",
             "show_email": true,
             "show_phone": true,
             "show_address": true,
