@@ -39,7 +39,14 @@
     {%- if block.settings.show_address and has_address -%}
       <div class="contact-details__item">
         <dt>{{ 'business_info.address' | t }}</dt>
-        <dd class="contact-details__address">{{ shop.address | format_address }}</dd>
+        <dd class="contact-details__address">
+          {%- if shop.address.address1 != blank -%}{{ shop.address.address1 | escape }}<br>{%- endif -%}
+          {%- if shop.address.address2 != blank -%}{{ shop.address.address2 | escape }}<br>{%- endif -%}
+          {%- if shop.address.city != blank or shop.address.zip != blank -%}
+            {{- shop.address.city | escape }} {{ shop.address.zip | escape -}}<br>
+          {%- endif -%}
+          {{- shop.address.country | escape -}}
+        </dd>
       </div>
     {%- endif -%}
   </dl>
@@ -118,7 +125,8 @@
       "type": "checkbox",
       "id": "show_legal_info",
       "label": "Show company details",
-      "default": true
+      "info": "The footer already shows these on every page.",
+      "default": false
     },
     {
       "type": "select",

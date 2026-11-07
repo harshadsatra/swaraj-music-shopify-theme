@@ -120,8 +120,12 @@
             "show_email": true,
             "show_phone": true,
             "show_address": true,
-            "show_legal_info": true,
-            "alignment": "left"
+            "show_legal_info": false,
+            "alignment": "left",
+            "width": "custom",
+            "custom_width": 40,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100
           },
           "blocks": {}
         }
