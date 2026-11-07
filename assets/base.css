@@ -1361,7 +1361,7 @@ summary:hover {
 
 .shopify-policy__body {
   line-height: 1.7;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 
   p,
   ul,
@@ -1383,7 +1383,8 @@ summary:hover {
     line-height: 1.35;
   }
 
-  :first-child:is(p, h2, h3, h4) {
+  :first-child:is(p, h2, h3, h4),
+  p:first-child:has(> strong:only-child) {
     margin-block-start: 0;
   }
 
