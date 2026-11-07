@@ -19,11 +19,25 @@
       , {{ powered_by_link }}
     {%- endif -%}
   </span>
+  {%- if block_settings.show_legal_info -%}
+    {%- capture legal_line -%}{%- render 'business-legal-line' -%}{%- endcapture -%}
+    {%- assign legal_line = legal_line | strip -%}
+    {%- if legal_line != blank -%}
+      <span class="footer-utilities__text footer-utilities__legal">{{ legal_line }}</span>
+    {%- endif -%}
+  {%- endif -%}
 </div>
 
 {% stylesheet %}
   .footer-utilities__group-copyright {
     color: var(--color-utilities, var(--color-foreground-muted));
+  }
+
+  .footer-utilities__legal {
+    display: block;
+    margin-top: 0.25em;
+    white-space: normal;
+    text-wrap: pretty;
   }
 {% endstylesheet %}
 
@@ -41,6 +55,13 @@
     {
       "type": "paragraph",
       "content": "t:content.manage_store_name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_legal_info",
+      "label": "Show company details",
+      "info": "Legal name, company number and registered office. Edit them in Theme settings → Business information.",
+      "default": true
     },
     {
       "type": "header",

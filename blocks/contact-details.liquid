@@ -1,0 +1,141 @@
+{%- doc -%}
+  Shows the store's contact details. Email, phone and address come from Settings → General → Store details
+  in the Shopify admin, and the company line from Theme settings → Business information, so editing either
+  place updates this block without touching the page.
+{%- enddoc -%}
+{%- liquid
+  assign phone_href = shop.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-'
+  capture legal_line
+    render 'business-legal-line'
+  endcapture
+  assign legal_line = legal_line | strip
+  assign has_address = false
+  if shop.address.address1 != blank or shop.address.city != blank
+    assign has_address = true
+  endif
+-%}
+<div
+  class="contact-details contact-details--{{ block.settings.alignment }}"
+  {{ block.shopify_attributes }}
+>
+  <dl class="contact-details__list">
+    {%- if block.settings.show_email and shop.email != blank -%}
+      <div class="contact-details__item">
+        <dt>{{ 'business_info.email' | t }}</dt>
+        <dd>
+          <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+        </dd>
+      </div>
+    {%- endif -%}
+    {%- if block.settings.show_phone and shop.phone != blank -%}
+      <div class="contact-details__item">
+        <dt>{{ 'business_info.phone' | t }}</dt>
+        <dd>
+          <a href="tel:{{ phone_href }}">{{ shop.phone }}</a>
+        </dd>
+      </div>
+    {%- endif -%}
+    {%- if block.settings.show_address and has_address -%}
+      <div class="contact-details__item">
+        <dt>{{ 'business_info.address' | t }}</dt>
+        <dd class="contact-details__address">{{ shop.address | format_address }}</dd>
+      </div>
+    {%- endif -%}
+  </dl>
+  {%- if block.settings.show_legal_info and legal_line != blank -%}
+    <p class="contact-details__legal">{{ legal_line }}</p>
+  {%- endif -%}
+</div>
+
+{% stylesheet %}
+  .contact-details {
+    width: 100%;
+    max-width: var(--narrow-page-width, 48rem);
+    margin-inline: auto;
+  }
+
+  .contact-details--left {
+    text-align: start;
+  }
+
+  .contact-details--center {
+    text-align: center;
+  }
+
+  .contact-details__list {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+  }
+
+  .contact-details__item dt {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .contact-details__item dd {
+    margin: 0;
+  }
+
+  .contact-details__address p {
+    margin: 0;
+  }
+
+  .contact-details__legal {
+    margin: 1.5rem 0 0;
+    font-size: 0.875em;
+    color: var(--color-foreground-muted, inherit);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Email, phone and address come from Settings → General → Store details in the Shopify admin. The company line comes from Theme settings → Business information."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_address",
+      "label": "Show address",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_legal_info",
+      "label": "Show company details",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact details"
+    }
+  ]
+}
+{% endschema %}

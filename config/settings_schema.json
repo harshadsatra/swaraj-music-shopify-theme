@@ -2116,5 +2116,43 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Business information",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Email, phone and trading address come from Settings → General → Store details in the Shopify admin. Use these fields for the company's legal details, shown in the footer and on the Contact page."
+      },
+      {
+        "type": "text",
+        "id": "business_legal_name",
+        "label": "Legal business name",
+        "info": "Leave blank to use the company name from Store details."
+      },
+      {
+        "type": "text",
+        "id": "business_company_number",
+        "label": "Company number"
+      },
+      {
+        "type": "text",
+        "id": "business_registered_in",
+        "label": "Registered in",
+        "default": "England & Wales"
+      },
+      {
+        "type": "textarea",
+        "id": "business_registered_office",
+        "label": "Registered office address",
+        "info": "As listed on Companies House. One line or one line per part."
+      },
+      {
+        "type": "textarea",
+        "id": "business_social_profiles",
+        "label": "Social profile URLs",
+        "info": "One URL per line. Helps search engines connect these profiles to your business."
+      }
+    ]
   }
 ]

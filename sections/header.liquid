@@ -325,15 +325,75 @@
   {% endif %}
 {% endcapture %}
 
+{%- liquid
+  assign org_legal_name = settings.business_legal_name | strip
+  if org_legal_name == blank
+    assign org_legal_name = shop.address.company | strip
+  endif
+  assign org_company_number = settings.business_company_number | strip
+  assign org_same_as = settings.business_social_profiles | newline_to_br | split: '<br />'
+  assign org_has_address = false
+  if shop.address.address1 != blank or shop.address.city != blank
+    assign org_has_address = true
+  endif
+  assign org_street = shop.address.address1 | strip
+  if shop.address.address2 != blank
+    assign org_street = org_street | append: ', ' | append: shop.address.address2
+  endif
+-%}
 <script type="application/ld+json">
   {
-    "@context": "http://schema.org",
+    "@context": "https://schema.org",
     "@type": "Organization",
     "name": {{ shop.name | json }},
-    {% if settings.logo %}
+    {%- if org_legal_name != blank %}
+      "legalName": {{ org_legal_name | json }},
+    {%- endif %}
+    {%- if org_company_number != blank %}
+      "identifier": {
+        "@type": "PropertyValue",
+        "propertyID": "Company number",
+        "value": {{ org_company_number | json }}
+      },
+    {%- endif %}
+    {%- if settings.logo %}
       "logo": {{ settings.logo | image_url: width: 500 | prepend: "https:" | json }},
-    {% endif %}
-    "url": {{ request.origin | append: page.url | json }}
+    {%- endif %}
+    {%- if shop.email != blank %}
+      "email": {{ shop.email | json }},
+    {%- endif %}
+    {%- if shop.phone != blank %}
+      "telephone": {{ shop.phone | json }},
+    {%- endif %}
+    {%- if org_has_address %}
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": {{ org_street | json }},
+        "addressLocality": {{ shop.address.city | json }},
+        "addressRegion": {{ shop.address.province | default: '' | json }},
+        "postalCode": {{ shop.address.zip | json }},
+        "addressCountry": {{ shop.address.country_code | json }}
+      },
+    {%- endif %}
+    {%- if shop.email != blank or shop.phone != blank %}
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service"
+        {%- if shop.email != blank %}, "email": {{ shop.email | json }}{% endif %}
+        {%- if shop.phone != blank %}, "telephone": {{ shop.phone | json }}{% endif %}
+      },
+    {%- endif %}
+    "sameAs": [
+      {%- assign org_first = true -%}
+      {%- for org_profile in org_same_as -%}
+        {%- assign org_profile_url = org_profile | strip -%}
+        {%- if org_profile_url != blank -%}
+          {%- unless org_first %},{% endunless %}{{ org_profile_url | json }}
+          {%- assign org_first = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ],
+    "url": {{ shop.url | json }}
   }
 </script>
 

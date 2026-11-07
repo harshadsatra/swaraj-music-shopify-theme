@@ -1,0 +1,49 @@
+{%- doc -%}
+  Renders the business's legal identity as one line of plain text: legal name, where the company is
+  registered, company number and registered office. Values come from Theme settings → Business information,
+  falling back to the company name in Settings → General → Store details. Outputs nothing when neither a
+  company number nor a registered office is set.
+
+  @param {string} [separator] - Text placed between the parts. Defaults to ' · '.
+
+  @example
+  {% render 'business-legal-line' %}
+{%- enddoc -%}
+{%- liquid
+  assign sep = separator | default: ' · '
+
+  assign legal_name = settings.business_legal_name | strip
+  if legal_name == blank
+    assign legal_name = shop.address.company | strip | default: shop.name
+  endif
+
+  assign company_number = settings.business_company_number | strip
+  assign registered_in = settings.business_registered_in | strip
+
+  assign registered_office = ''
+  assign office_lines = settings.business_registered_office | newline_to_br | split: '<br />'
+  for office_line in office_lines
+    assign office_part = office_line | strip
+    if office_part != blank
+      if registered_office != blank
+        assign registered_office = registered_office | append: ', '
+      endif
+      assign registered_office = registered_office | append: office_part
+    endif
+  endfor
+-%}
+{%- if company_number != blank or registered_office != blank -%}
+  {{- legal_name | escape -}}
+  {%- if registered_in != blank -%}
+    {{- sep -}}
+    {{- 'business_info.registered_in' | t: place: registered_in -}}
+  {%- endif -%}
+  {%- if company_number != blank -%}
+    {{- sep -}}
+    {{- 'business_info.company_number' | t: number: company_number -}}
+  {%- endif -%}
+  {%- if registered_office != blank -%}
+    {{- sep -}}
+    {{- 'business_info.registered_office' | t: address: registered_office -}}
+  {%- endif -%}
+{%- endif -%}
