@@ -61,23 +61,11 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "contact_details": {
-          "type": "contact-details",
-          "settings": {
-            "show_email": true,
-            "show_phone": true,
-            "show_address": true,
-            "show_legal_info": true,
-            "alignment": "center"
-          },
-          "blocks": {}
         }
       },
       "block_order": [
         "title",
-        "content",
-        "contact_details"
+        "content"
       ],
       "settings": {
         "content_direction": "column",
@@ -94,7 +82,7 @@
           "type": "contact-form",
           "settings": {
             "width": "custom",
-            "custom_width": 50,
+            "custom_width": 60,
             "width_mobile": "custom",
             "custom_width_mobile": 100,
             "input_style": "custom",
@@ -125,9 +113,21 @@
             }
           },
           "block_order": []
+        },
+        "contact_details": {
+          "type": "contact-details",
+          "settings": {
+            "show_email": true,
+            "show_phone": true,
+            "show_address": true,
+            "show_legal_info": true,
+            "alignment": "left"
+          },
+          "blocks": {}
         }
       },
       "block_order": [
+        "contact_details",
         "contact_form_UwiCkQ"
       ],
       "custom_css": [
@@ -135,14 +135,14 @@
       ],
       "name": "t:names.contact_form",
       "settings": {
-        "content_direction": "column",
+        "content_direction": "row",
         "vertical_on_mobile": true,
         "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
+        "vertical_alignment": "flex-start",
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "center",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 32,
+        "gap": 48,
         "section_width": "page-width",
         "section_height": "",
         "section_height_custom": 50,

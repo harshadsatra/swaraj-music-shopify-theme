@@ -15,7 +15,8 @@
   endif
 -%}
 <div
-  class="contact-details contact-details--{{ block.settings.alignment }}"
+  class="contact-details contact-details--{{ block.settings.alignment }} size-style"
+  style="{% render 'size-style', settings: block.settings %}"
   {{ block.shopify_attributes }}
 >
   <dl class="contact-details__list">
@@ -49,9 +50,7 @@
 
 {% stylesheet %}
   .contact-details {
-    width: 100%;
-    max-width: var(--narrow-page-width, 48rem);
-    margin-inline: auto;
+    min-width: 0;
   }
 
   .contact-details--left {
@@ -129,7 +128,49 @@
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" }
       ],
-      "default": "center"
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width on desktop",
+      "options": [
+        { "value": "fit-content", "label": "Fit content" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "range",
+      "id": "custom_width",
+      "label": "Width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 40,
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "Width on mobile",
+      "options": [
+        { "value": "fit-content", "label": "Fit content" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "custom"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "Width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
     }
   ],
   "presets": [
