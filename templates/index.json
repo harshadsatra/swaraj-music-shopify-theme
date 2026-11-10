@@ -40,7 +40,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>SWARAJ WILL BE BACK IN 2027</p>",
+            "text": "<p>BLACK FRIDAY SALE COMING SOON. DISCOUNTS ON ALL T-SHIRT DESIGNS</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -95,11 +95,12 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/S1.webp",
+        "image_1": "shopify://shop_images/Group_2_-_original-desktop.webp",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
+        "custom_mobile_media": true,
         "media_type_1_mobile": "image",
+        "image_1_mobile": "shopify://shop_images/Group_2_-_original-mobile.webp",
         "media_type_2_mobile": "image",
         "link": "",
         "open_in_new_tab": false,
