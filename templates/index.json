@@ -144,7 +144,7 @@
         "section_height_custom": 5,
         "background_color": "{{ settings.color_palette.color8 }}",
         "toggle_overlay": true,
-        "overlay_color": "#140a0521",
+        "overlay_color": "#140A050A",
         "overlay_style": "solid",
         "gradient_direction": "to bottom",
         "blurred_reflection": false,
