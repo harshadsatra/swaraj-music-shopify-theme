@@ -40,7 +40,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>BLACK FRIDAY SALE COMING SOON.</p>",
+            "text": "<p>BLACK FRIDAY - 27th - 30th November</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -66,7 +66,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>DISCOUNTS ON ALL T-SHIRT DESIGNS</p>",
+            "text": "<p>20% OFF ON ALL T-SHIRT DESIGNS</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -144,7 +144,7 @@
         "section_height_custom": 5,
         "background_color": "{{ settings.color_palette.color8 }}",
         "toggle_overlay": true,
-        "overlay_color": "#140A0521",
+        "overlay_color": "#140a0521",
         "overlay_style": "solid",
         "gradient_direction": "to bottom",
         "blurred_reflection": false,
