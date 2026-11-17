@@ -117,7 +117,8 @@
       ],
       "custom_css": [
         ".button-secondary {--button-color: #ffffff; --button-border-color: #ffffff;}",
-        ".button-secondary:hover {--button-color: #c72d3f;}"
+        ".button-secondary:hover {--button-color: #c72d3f;}",
+        ".text-block{text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);}"
       ],
       "name": "t:names.hero",
       "settings": {
