@@ -40,7 +40,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>BLACK FRIDAY - 27th - 30th November</p>",
+            "text": "<p>SWARAJ BLACK FRIDAY SALE<br/>27th - 30th November</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -66,7 +66,7 @@
           "type": "text",
           "name": "t:names.heading",
           "settings": {
-            "text": "<p>20% OFF ON ALL T-SHIRT DESIGNS</p>",
+            "text": "<p>20% OFF ALL T-SHIRT DESIGNS</p>",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -118,7 +118,7 @@
       "custom_css": [
         ".button-secondary {--button-color: #ffffff; --button-border-color: #ffffff;}",
         ".button-secondary:hover {--button-color: #c72d3f;}",
-        ".text-block{text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);}"
+        ".text-block {text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);}"
       ],
       "name": "t:names.hero",
       "settings": {
@@ -145,7 +145,7 @@
         "section_height_custom": 5,
         "background_color": "{{ settings.color_palette.color8 }}",
         "toggle_overlay": true,
-        "overlay_color": "#140A050A",
+        "overlay_color": "#140a050a",
         "overlay_style": "solid",
         "gradient_direction": "to bottom",
         "blurred_reflection": false,
